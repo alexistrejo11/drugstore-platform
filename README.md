@@ -66,7 +66,7 @@ Services expose **Actuator** (`health`, `info`, `prometheus` where enabled) and 
 
 Requirements (typical):
 
-- **Java 23** (toolchain in Gradle).
+- **Java 25** (toolchain in Gradle).
 - **Docker** + **Docker Compose** for running a service container against shared infra.
 - External networks `infra_central_network` and `shared_app_network` (see [docs/docker-local-dev.md](docs/docker-local-dev.md)).
 
@@ -87,6 +87,12 @@ docker compose up -d --build
 ```
 
 Full Docker notes: [docs/docker-local-dev.md](docs/docker-local-dev.md).
+
+### Spring profiles
+
+Every service ships `application-dev.yml` and `application-prod.yml`; `application.yml` sets
+`spring.profiles.default: dev`. `bootRun` always uses the default `dev` profile, while containers
+and `.env` default to `prod`. Select explicitly with `SPRING_PROFILES_ACTIVE=dev|prod`.
 
 ## Further reading
 

@@ -34,7 +34,7 @@ It handles **outbound notifications**: email, SMS, or other channels as implemen
 
 ## Tech Stack
 
-- Java 23
+- Java 25
 - Spring Boot 3.3.x (see `build.gradle` for exact starters)
 - Spring ecosystem components as declared in Gradle
 - **Thymeleaf** for classpath notification templates

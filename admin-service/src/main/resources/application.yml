@@ -10,6 +10,8 @@ management:
 spring:
   application:
     name: admin-service
+  profiles:
+    default: dev
   boot:
     admin:
       discovery:

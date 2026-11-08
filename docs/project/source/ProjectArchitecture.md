@@ -1351,7 +1351,7 @@ scalabilityStrategies:
   - title: "Stateless replicas behind Nginx"
     description: "Docker Compose scales `store-service` (`--scale`); Redis holds shared cache; Postgres is single writer (scale read replicas externally — **not configured here**)."
   - title: "HTTP compression (docker)"
-    description: "`application-docker.yml` enables gzip for JSON payloads above threshold."
+    description: "`application-prod.yml` enables gzip for JSON payloads above threshold."
 
   # user-service
   - title: "Stateless instances"
@@ -3447,7 +3447,7 @@ techDecisions:
     - title: "JPA over raw SQL"
       problem: "Relational persistence with schema migrations."
       solution: "Spring Data JPA + Flyway in hardened profiles."
-      outcome: "**Dev profile** disables Flyway and uses ddl-auto update — inconsistent with Docker profile intent."
+      outcome: "**Dev profile** disables Flyway and uses ddl-auto update — inconsistent with prod profile intent."
       icon: "database"
       alternatives:
         - "MyBatis / jOOQ"
@@ -3635,7 +3635,7 @@ techDecisions:
 ## Critical gaps
 
 - **gRPC server not bootstrapped**: `UserGrpcServer` never registered on a `NettyServerBuilder`; external callers cannot dial this process for RPC today.
-- **Configuration cross-contamination**: `application-docker.yml` and SpringDoc scan packages still reference **store** / **products** strings — classify as defect, not stylistic drift.
+- **Configuration cross-contamination**: `application-prod.yml` and SpringDoc scan packages still reference **store** / **products** strings — classify as defect, not stylistic drift.
 - **Inter-service identity**: JWT issuer/secret coupling with whoever mints tokens; document contract (placeholder audience: `drugstore-api`).
 
 <!-- END user-service -->

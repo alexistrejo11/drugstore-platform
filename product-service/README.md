@@ -35,8 +35,8 @@ It owns the **product catalog**: CRUD, search, caching, and **Kafka** publicatio
 
 ## Tech Stack
 
-- Java 23
-- Spring Boot 3.3.2
+- Java 25
+- Spring Boot 3.5.16
 - Spring Web, Spring Security, Spring Data JPA, Spring Data Redis, Spring Cache, Spring Kafka
 - PostgreSQL, Flyway
 - Springdoc OpenAPI

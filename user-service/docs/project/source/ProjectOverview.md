@@ -23,7 +23,7 @@ keyMetrics:
   metricsList:
     - "p95 read latency < 150ms at steady state (not measured in-repo)"
     - "Actuator /actuator/health for container orchestration"
-    - "Flyway on in docker profile when application-docker.yml is corrected (see risks)"
+    - "Flyway on in prod profile when application-prod.yml is corrected (see risks)"
 
 coverImage:
   url: "https://placehold.co/1200x630/2196F3/ffffff?text=User+Service"
@@ -82,7 +82,7 @@ The **user-service** is a Spring Boot microservice that owns **user persistence*
 
 | Severity | Topic | Note |
 |----------|--------|------|
-| **High** | `application-docker.yml` | File content matches **store-service** (wrong `spring.application.name`, DB name defaults, springdoc scan, log/metrics labels). Docker runs may not match user-service expectations until fixed. |
+| **High** | `application-prod.yml` | File content matches **store-service** (wrong `spring.application.name`, DB name defaults, springdoc scan, log/metrics labels). Docker runs may not match user-service expectations until fixed. |
 | **High** | OpenAPI scan | `springdoc.packages-to-scan` points at `io.github.alexisTrejo11.drugstore.**stores**`, not `...users**` — Swagger may omit user controllers. |
 | **Medium** | gRPC | `UserGrpcServer` exists but **no gRPC Netty server / Spring gRPC starter** wires it; `GrpcServerConfig` is empty. Port `9090` in config does not expose a working RPC server in this codebase. |
 | **Medium** | Kafka consumer | On failure, **no ack** and **no DLQ** — throws `RuntimeException`; can cause tight retry loops (TODOs in code). |

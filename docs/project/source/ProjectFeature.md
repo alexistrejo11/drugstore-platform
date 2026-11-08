@@ -484,7 +484,7 @@ features:
         icon: "trace"
     codeSnippet:
       language: "yaml"
-      filename: "application-docker.yml"
+      filename: "application-prod.yml"
       code: |
         management:
           endpoints:
@@ -3256,6 +3256,6 @@ Run: `./gradlew test` (from `inventory-service`).
 
 ## Summary
 
-Features span **REST** (query, manager, profile), **Kafka** ingestion, **gRPC contract** (not yet served), and **local observability** stack. Prioritize fixing **OpenAPI package scan** and **docker profile YAML** before treating docs or contracts as release artifacts.
+Features span **REST** (query, manager, profile), **Kafka** ingestion, **gRPC contract** (not yet served), and **local observability** stack. Prioritize fixing **OpenAPI package scan** and **prod profile YAML** before treating docs or contracts as release artifacts.
 
 <!-- END user-service -->

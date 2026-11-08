@@ -40,4 +40,4 @@ Structured mirror of `docs/project/source/ProjectMetadata.md` front matter for n
 - **Danger — wrong service in default YAML:** `src/main/resources/application.yml` still uses **`spring.application.name: product-service`**, wrong datasource env key **`product_DB`**, and product-service logging paths. Local `dev` runs can point at the wrong database unless you override env vars or switch to `docker` profile.
 - **Danger — secrets:** Example passwords may appear in YAML; use env-only secrets in shared or production environments.
 - **Missing — Kafka:** `SPRING_KAFKA_BOOTSTRAP_SERVERS` is required by Compose, but `StoreEventPublisherImpl` does not publish to a topic.
-- **Important — JWT env naming:** Docker profile uses **`JWT_SECRET_KEY`** (see `application-docker.yml`); local `application.yml` references **`JWT_SECRET`** / **`ISSUER`** — keep `.env` aligned with the active profile.
+- **Important — JWT env naming:** prod profile uses **`JWT_SECRET_KEY`** (see `application-prod.yml`); local `application.yml` references **`JWT_SECRET`** / **`ISSUER`** — keep `.env` aligned with the active profile.

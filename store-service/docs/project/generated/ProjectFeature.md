@@ -33,7 +33,7 @@ Mirrors `docs/project/source/ProjectFeature.md` in prose form for standard Markd
 ## 4. JWT + Spring Security
 
 - **Stateless** session; **CSRF off**; JWT filter inserted before username/password filter.
-- **Public:** Swagger and actuator subsets (`health`, `info`, `prometheus` in docker profile).
+- **Public:** Swagger and actuator subsets (`health`, `info`, `prometheus` in prod profile).
 - **Mismatch:** Controller-level `@SecurityRequirement(bearerAuth)` **overstates** requirement for reads.
 
 ---

@@ -35,8 +35,8 @@ It owns **user identity and profile** persistence: accounts, attributes consumed
 
 ## Tech Stack
 
-- Java 23
-- Spring Boot 3.3.2
+- Java 25
+- Spring Boot 3.5.16
 - Spring Web, Spring Security, Spring Data JPA, Spring Data Redis, Spring Kafka
 - gRPC + Protobuf
 - PostgreSQL, Flyway
@@ -55,7 +55,8 @@ user-service/
 │   │   ├── java/
 │   │   └── resources/
 │   │       ├── application.yml
-│   │       ├── application-docker.yml
+│   │       ├── application-dev.yml
+│   │       ├── application-prod.yml
 │   │       └── logback-spring.xml
 │   └── test/
 ├── Dockerfile

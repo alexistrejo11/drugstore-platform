@@ -81,7 +81,7 @@ Plain-Markdown twin of `docs/project/source/ProjectInfrastructure.md`.
 Multi-stage build pattern:
 
 1. **Builder:** JDK 23 Alpine — compile shared-kernel (or resolve from GitHub Packages), Gradle `bootJar`
-2. **Runtime:** JRE 23 Alpine — non-root `spring` user, `keystore.p12`, entrypoint with `SPRING_PROFILES_ACTIVE=docker`
+2. **Runtime:** JRE 23 Alpine — non-root `spring` user, `keystore.p12`, entrypoint with `SPRING_PROFILES_ACTIVE=prod`
 3. **Healthcheck:** `wget` to `https://localhost:8443/actuator/health` (no cert verify in container)
 
 **Redis service (compose excerpt):**

@@ -450,4 +450,4 @@ Base URL (local compose via Nginx): **`https://localhost/`** (self-signed / gene
 > Class-level `@SecurityRequirement(bearerAuth)` suggests all operations need JWT, but **GET store routes are permitAll** in `SecurityConfig`. Update Springdoc grouped security requirements or enforce auth consistently.
 
 > [!tip] Try-it-out  
-> Docker profile sets `try-it-out-enabled: false` in `application-docker.yml` — enable only in trusted environments.
+> prod profile sets `try-it-out-enabled: false` in `application-prod.yml` — enable only in trusted environments.

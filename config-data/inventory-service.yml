@@ -25,7 +25,7 @@ spring:
   application:
     name: inventory-service
   profiles:
-    active: dev
+    default: dev
 
   # REDIS CONFIGURATION
   data:

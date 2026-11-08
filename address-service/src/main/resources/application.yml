@@ -1,16 +1,18 @@
-# Default / standalone profile (no spring.profiles.active required).
-# Connection targets come from env vars; localhost defaults suit ./gradlew bootRun and IDE runs.
-# For containers, set SPRING_PROFILES_ACTIVE=docker (see application-docker.yml).
+# Common configuration shared by every environment.
+# Select the environment with SPRING_PROFILES_ACTIVE=dev|prod (defaults to dev).
+# Profile files only add/override environment-specific behaviour.
 
 server:
-  port: ${ADDRESS_SERVICE_PORT}
+  port: ${ADDRESS_SERVICE_PORT:8080}
   forward-headers-strategy: native
 
 spring:
+  profiles:
+    default: dev
   application:
     name: address-service
   datasource:
-    url: ${DATASOURCE_URL}
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/address_db}
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
@@ -22,29 +24,23 @@ spring:
     validate-on-migrate: true
     out-of-order: false
     encoding: UTF-8
+    table: flyway_schema_history
+    clean-disabled: true
   jpa:
+    open-in-view: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-    show-sql: true
-    hibernate:
-      ddl-auto: validate
   data:
     redis:
-      url: ${REDIS_URL}
+      url: ${REDIS_URL:redis://localhost:6379}
 
 springdoc:
   api-docs:
-    enabled: true
     path: /v3/api-docs
   swagger-ui:
-    enabled: true
     path: /swagger-ui.html
     disable-swagger-default-url: true
-    try-it-out-enabled: true
-    operations-sorter: method
-    tags-sorter: alpha
 
 jwt:
   secret: ${JWT_SECRET_KEY}
@@ -81,37 +77,18 @@ app:
         durationSeconds: 60
 
 logging:
-    name: logs/address-service.log
-    path: logs
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
-  level:
-    root: INFO
-    io.github.alexisTrejo11.drugstore: DEBUG
-    libs_kernel.log.audit: INFO
 
 audit:
   log:
     enabled: true
-    excluded-endpoints: /actuator/health, /actuator/info, /swagger-ui.html, /v3/api-docs
+    excluded-endpoints: /actuator/health, /actuator/info, /actuator/metrics, /actuator/prometheus
 
 management:
   endpoints:
     web:
-      exposure:
-        include: health,info,prometheus
       base-path: /actuator
-  endpoint:
-    health:
-      show-details: always
-    prometheus:
-      enabled: true
   metrics:
-    export:
-      prometheus:
-        enabled: true
     tags:
       application: ${spring.application.name}
-  tracing:
-    sampling:
-      probability: 1.0

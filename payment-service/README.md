@@ -34,8 +34,8 @@ It owns **payment capture and reconciliation**: Stripe integration, webhooks, pe
 
 ## Tech Stack
 
-- Java 23
-- Spring Boot 3.3.2
+- Java 25
+- Spring Boot 3.5.16
 - Spring Web, Spring Data JPA, Spring Security, Spring Kafka (where used)
 - PostgreSQL, Flyway
 - Stripe Java SDK
@@ -53,7 +53,8 @@ payment-service/
 │   │   ├── java/
 │   │   └── resources/
 │   │       ├── application.yml
-│   │       ├── application-docker.yml
+│   │       ├── application-dev.yml
+│   │       ├── application-prod.yml
 │   │       └── logback-spring.xml
 │   └── test/
 ├── Dockerfile

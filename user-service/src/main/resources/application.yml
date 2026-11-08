@@ -6,7 +6,7 @@ spring:
   application:
     name: user-service
   profiles:
-    active: dev
+    default: dev
   boot:
     admin:
       client:
@@ -220,6 +220,7 @@ app:
         durationSeconds: 60
 
 logging:
+  file:
     name: logs/user-service.log
     path: logs
   pattern:

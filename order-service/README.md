@@ -35,8 +35,8 @@ It owns the **order** aggregate: placement, state transitions, persistence, and 
 
 ## Tech Stack
 
-- Java 23
-- Spring Boot 3.5.14
+- Java 25
+- Spring Boot 3.5.16
 - Spring Web, Spring Security, Spring Data JPA, Spring Data Redis, Spring Cache
 - PostgreSQL, Flyway
 - Springdoc OpenAPI
@@ -55,7 +55,8 @@ order-service/
 │   │   ├── java/
 │   │   └── resources/
 │   │       ├── application.yml
-│   │       ├── application-docker.yml
+│   │       ├── application-dev.yml
+│   │       ├── application-prod.yml
 │   │       └── logback-spring.xml
 │   └── test/
 ├── Dockerfile

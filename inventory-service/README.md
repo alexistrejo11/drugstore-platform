@@ -35,8 +35,8 @@ It owns **inventory and stock** visibility: availability, reservations-friendly 
 
 ## Tech Stack
 
-- Java 23
-- Spring Boot 3.3.2
+- Java 25
+- Spring Boot 3.5.16
 - Spring Web, Spring Data JPA, Spring Data Redis, Spring Cache, Spring AMQP
 - PostgreSQL, Flyway (optional by profile)
 - Logstash encoder (legacy ELK-style logs) + **Loki** for unified observability

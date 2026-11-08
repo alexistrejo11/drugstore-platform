@@ -1,7 +1,7 @@
 ---
 # InfrastructureMetric[]
 metrics:
-  - label: "Service Port" value: "8080 (compose)" icon: "server" description: "HTTP inside Docker network when SPRING_PROFILES_ACTIVE=docker; optional standalone SSL profile may differ"
+  - label: "Service Port" value: "8080 (compose)" icon: "server" description: "HTTP inside Docker network when SPRING_PROFILES_ACTIVE=prod; optional standalone SSL profile may differ"
   - label: "Reverse Proxy" value: "Edge TLS/reverse proxy is provided by shared infra outside this monorepo (not bundled per service).
   - label: "Database" value: "PostgreSQL 15" icon: "database" description: "Relational database for order persistence with Flyway migrations"
   - label: "Cache" value: "Redis 7" icon: "cache" description: "In-memory data store for caching frequently accessed order data"
@@ -79,7 +79,7 @@ dockerFiles:
       ports: ["8086:8080"]
       environment:
         - SERVER_PORT=8080
-        - SPRING_PROFILES_ACTIVE=docker
+        - SPRING_PROFILES_ACTIVE=prod
   - service: "nginx"
     description: "Edge TLS/reverse proxy is provided by shared infra outside this monorepo (not bundled per service).
     content: |

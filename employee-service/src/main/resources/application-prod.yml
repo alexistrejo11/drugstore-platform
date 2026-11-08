@@ -1,18 +1,25 @@
+# Production profile — containers and hardened deployments.
+# Minimal Actuator surface, Swagger off by default, SQL logging off.
+
 server:
-  port: ${STORE_SERVICE_PORT}
+  port: ${EMPLOYEE_SERVICE_PORT}
   forward-headers-strategy: native
   compression:
     enabled: true
     mime-types: application/json,application/xml,text/html,text/xml,text/plain
     min-response-size: 2048
-
 spring:
   application:
-    name: store-service
-  kafka:
-    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
+    name: employee-service
+  boot:
+    admin:
+      client:
+        enabled: false
+  autoconfigure:
+    exclude:
+    - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
   datasource:
-    url: ${DATASOURCE_URL:jdbc:postgresql://postgres:5432/store_db}
+    url: ${DATASOURCE_URL:jdbc:postgresql://postgres:5432/employee_db}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -61,32 +68,28 @@ spring:
         max-attempts: 3
         initial-interval: 1000
         multiplier: 1.5
-
-# Production / hardened stacks: set SWAGGER_ENABLED=false
+  devtools:
+    restart:
+      enabled: false
+    livereload:
+      enabled: false
 springdoc:
   api-docs:
-    enabled: ${SWAGGER_ENABLED:true}
+    enabled: ${SWAGGER_ENABLED:false}
     path: /v3/api-docs
-  show-actuator: false
-  packages-to-scan: io.github.alexisTrejo11.drugstore.stores
-  paths-to-match: /api/**
   swagger-ui:
-    enabled: ${SWAGGER_ENABLED:true}
+    enabled: ${SWAGGER_ENABLED:false}
     path: /swagger-ui.html
     disable-swagger-default-url: true
-    url: /v3/api-docs
-    config-url: /v3/api-docs/swagger-config
     try-it-out-enabled: false
-
 jwt:
   secret: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: ${JWT_ACCESS_TOKEN_EXPIRATION_MINUTES:15}
   refresh-token-expiration-minutes: ${JWT_REFRESH_TOKEN_EXPIRATION_MINUTES:43200}
-  issuer: ${JWT_ISSUER:drugstore-prod}
-
+  issuer: ${JWT_ISSUER:drugstore-api}
 app:
   redis:
-    key-prefix: ${REDIS_KEY_PREFIX:drugstore:store:}
+    key-prefix: ${REDIS_KEY_PREFIX:drugstore:employee:}
   rate-limit:
     global:
       enabled: true
@@ -111,24 +114,22 @@ app:
       customer-read:
         maxRequests: ${RATE_LIMIT_CUSTOMER_READ:100}
         durationSeconds: 60
-
 logging:
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n'
   level:
     root: ${LOG_LEVEL_ROOT:WARN}
     io.github.alexisTrejo11.drugstore: ${LOG_LEVEL_APP:INFO}
+    io.github.alexisTrejo11.drugstore.employees.config.security.jwt: ${LOG_LEVEL_JWT_FILTER:INFO}
     org.springframework.web: ${LOG_LEVEL_SPRING_WEB:WARN}
     org.springframework.security: ${LOG_LEVEL_SPRING_SECURITY:WARN}
     org.hibernate: ${LOG_LEVEL_HIBERNATE:WARN}
     libs_kernel.log.audit: ${LOG_LEVEL_AUDIT:INFO}
-
 audit:
   log:
     enabled: true
     excluded-endpoints: /actuator/health, /actuator/info, /actuator/metrics, /actuator/prometheus
     detailed: ${AUDIT_DETAILED:false}
-
 management:
   endpoints:
     web:
@@ -137,18 +138,26 @@ management:
       base-path: /actuator
   endpoint:
     health:
-      show-details: ${MANAGEMENT_HEALTH_DETAILS:always}
+      show-details: ${MANAGEMENT_HEALTH_DETAILS:never}
       probes:
         enabled: true
+      show-components: never
     prometheus:
       enabled: true
+    env:
+      enabled: false
+    loggers:
+      enabled: false
   metrics:
     export:
       prometheus:
         enabled: true
     tags:
-      application: store-service
-      environment: storeion
+      application: employee-service
+      environment: production
   tracing:
     sampling:
-      probability: 1.0
+      probability: ${TRACING_SAMPLING_PROBABILITY:0.1}
+  info:
+    env:
+      enabled: false

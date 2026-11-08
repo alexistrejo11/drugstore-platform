@@ -22,7 +22,7 @@ Central **user-service** microservice for the drugstore platform: **JWT REST API
 
 | Severity | Item | Detail |
 |---------|------|--------|
-| **High** | `application-docker.yml` | Content still references **store-service** (wrong `spring.application.name`, DB defaults, springdoc packages, Prometheus tags). Correct before trusting Docker deployments. |
+| **High** | `application-prod.yml` | Content still references **store-service** (wrong `spring.application.name`, DB defaults, springdoc packages, Prometheus tags). Correct before trusting Docker deployments. |
 | **High** | Springdoc scan | **`packages-to-scan`** points at `...drugstore.**stores**` instead of **`...users`** → OpenAPI/UI may omit user endpoints. |
 | **Medium** | gRPC runtime | **`UserGrpcServer`** exists but no **`ServerBuilder` / spring-grpc** lifecycle → **no RPC listener** despite `GRPC_PORT`. |
 | **Medium** | Kafka failures | Consumer **throws** without **DLQ**; unacked offsets → **potential tight retry**. |

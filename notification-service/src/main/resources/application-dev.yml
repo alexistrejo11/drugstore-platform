@@ -1,0 +1,42 @@
+# Development profile — local work: full Actuator and verbose MongoDB/Kafka logging.
+# Active by default through spring.profiles.default in application.yml.
+
+logging:
+  level:
+    root: INFO
+    io.github.alexisTrejo11.drugstore: DEBUG
+    org.springframework.data.mongodb: DEBUG
+    libs_kernel.log.audit: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+        allowed-methods: "*"
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+    info:
+      enabled: true
+    metrics:
+      enabled: true
+    env:
+      enabled: true
+    loggers:
+      enabled: true
+  info:
+    env:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      environment: development
+  tracing:
+    sampling:
+      probability: 1.0

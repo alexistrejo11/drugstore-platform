@@ -35,8 +35,8 @@ It owns **store** master data: locations, branding or operational attributes, an
 
 ## Tech Stack
 
-- Java 23
-- Spring Boot 3.3.2
+- Java 25
+- Spring Boot 3.5.16
 - Spring Web, Spring Security, Spring Data JPA, Spring Data Redis, Spring Cache
 - PostgreSQL, Flyway
 - Springdoc OpenAPI

@@ -1,23 +1,22 @@
+# Production profile — containers and hardened deployments.
+# Minimal Actuator surface, Swagger off by default, SQL logging off.
+
 server:
   port: ${NOTIFICATION_SERVICE_PORT:8093}
   forward-headers-strategy: native
-
 spring:
   application:
     name: notification-service
-
   cloud:
     config:
       enabled: ${CONFIG_SERVER_ENABLED:false}
       uri: ${CONFIG_SERVER_URI:http://config-server:8888}
       fail-fast: false
-
   data:
     mongodb:
       uri: ${MONGODB_URI:mongodb://mongodb:27017/notification_db}
       database: ${MONGODB_DATABASE:notification_db}
       auto-index-creation: true
-
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:kafka-1:9092,kafka-2:9092,kafka-3:9092}
     consumer:
@@ -32,7 +31,6 @@ spring:
         heartbeat.interval.ms: 3000
     listener:
       concurrency: 3
-
   mail:
     host: smtp.gmail.com
     port: 587
@@ -48,19 +46,16 @@ spring:
           connectiontimeout: 5000
           timeout: 5000
           writetimeout: 5000
-
 jwt:
   secret: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: ${JWT_ACCESS_TOKEN_EXPIRATION_MINUTES:15}
   refresh-token-expiration-minutes: ${JWT_REFRESH_TOKEN_EXPIRATION_MINUTES:43200}
   issuer: ${JWT_ISSUER:drugstore-prod}
-
 twilio:
   account-sid: ${TWILIO_ACCOUNT_SID:}
   auth-token: ${TWILIO_AUTH_TOKEN:}
   phone-number: ${TWILIO_PHONE_NUMBER:}
   enabled: ${TWILIO_ENABLED:false}
-
 notification:
   email:
     from-name: ${NOTIFICATION_EMAIL_FROM_NAME:Drugstore Notifications}
@@ -68,33 +63,44 @@ notification:
   retry:
     max-attempts: ${NOTIFICATION_RETRY_MAX_ATTEMPTS:3}
     backoff-delay-ms: ${NOTIFICATION_RETRY_BACKOFF_MS:5000}
-
 kafka:
   topics:
     notification:
       email-verification: notification.email-verification
       two-factor-code: notification.two-factor-code
       welcome-email: notification.welcome-email
-
 logging:
   level:
     root: ${LOG_LEVEL_ROOT:WARN}
     io.github.alexisTrejo11.drugstore: ${LOG_LEVEL_APP:INFO}
     org.springframework.data.mongodb: ${MONGODB_LOG_LEVEL:INFO}
-
+    org.springframework.web: ${LOG_LEVEL_SPRING_WEB:WARN}
+    org.springframework.security: ${LOG_LEVEL_SPRING_SECURITY:WARN}
+    org.hibernate: ${LOG_LEVEL_HIBERNATE:WARN}
+    libs_kernel.log.audit: ${LOG_LEVEL_AUDIT:INFO}
 management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,prometheus
+        include: health,info,prometheus
       base-path: /actuator
   endpoint:
     health:
-      show-details: ${MANAGEMENT_HEALTH_DETAILS:always}
+      show-details: ${MANAGEMENT_HEALTH_DETAILS:never}
+      show-components: never
+      probes:
+        enabled: true
+    env:
+      enabled: false
+    loggers:
+      enabled: false
   metrics:
     export:
       prometheus:
         enabled: true
     tags:
       application: notification-service
-      environment: docker
+      environment: production
+  info:
+    env:
+      enabled: false

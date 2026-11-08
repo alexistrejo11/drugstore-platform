@@ -4,7 +4,7 @@
 - **Java Version:** 23 (Eclipse Temurin, Spring Boot 3.x)
 - **Database:** PostgreSQL (configured via Spring; not defined in `docker-compose.yml` — provide externally or extend compose)
 - **Cache:** Redis (configured via Spring; not defined in `docker-compose.yml` — provide externally or extend compose)
-- **Application Port:** `8080` HTTP inside the compose network (`SPRING_PROFILES_ACTIVE=docker`). Published as host `8086:8080` for direct dev access.
+- **Application Port:** `8080` HTTP inside the compose network (`SPRING_PROFILES_ACTIVE=prod`). Published as host `8086:8080` for direct dev access.
 - **Reverse Proxy:** Edge TLS/reverse proxy is provided by shared infra outside this monorepo (not bundled per service).
 - **Observability (compose):** Prometheus, Loki, Grafana
 - **Health Endpoint:** `/actuator/health`

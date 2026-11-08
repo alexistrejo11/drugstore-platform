@@ -1,0 +1,16 @@
+# Production profile — minimal Actuator surface and warning-level logs.
+
+logging:
+  level:
+    root: ${LOG_LEVEL_ROOT:WARN}
+    de.codecentric: ${LOG_LEVEL_APP:INFO}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: ${MANAGEMENT_HEALTH_DETAILS:never}
+      show-components: never

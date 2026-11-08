@@ -1,7 +1,7 @@
 # Build context: service root.
 #   docker compose up -d --build)
 # glibc-based JDK: protoc-gen-grpc-java publishes linux binaries linked against glibc (Alpine/musl cannot run them).
-FROM eclipse-temurin:23-jdk-noble AS builder
+FROM eclipse-temurin:25-jdk-noble AS builder
 
 ARG GITHUB_ACTOR
 ARG GITHUB_TOKEN
@@ -25,7 +25,7 @@ RUN ./gradlew bootJar --no-daemon
 
 
 # Execution stage
-FROM eclipse-temurin:23-jre-alpine
+FROM eclipse-temurin:25-jre-alpine
 
 WORKDIR /app
 
@@ -36,7 +36,7 @@ RUN mkdir -p /app/config
 RUN chown -R spring:spring /app
 
 RUN echo '#!/bin/sh' > /app/entrypoint.sh && \
-    echo 'exec su-exec spring:spring java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:-docker} -jar /app/app.jar "$@"' >> /app/entrypoint.sh && \
+    echo 'exec su-exec spring:spring java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:-prod} -jar /app/app.jar "$@"' >> /app/entrypoint.sh && \
     chmod +x /app/entrypoint.sh
 
 USER root

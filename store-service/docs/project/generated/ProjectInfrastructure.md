@@ -64,7 +64,7 @@ deploymentLayers:
     components:
       - name: "store-service"
         icon: "spring"
-        description: "Scalable replicas; SPRING_PROFILES_ACTIVE=docker."
+        description: "Scalable replicas; SPRING_PROFILES_ACTIVE=prod."
   - name: "Data"
     color: "#E65100"
     components:

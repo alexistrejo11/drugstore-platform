@@ -5,6 +5,8 @@ server:
 spring:
   application:
     name: payment-service
+  profiles:
+    default: dev
 
   # DataSource
   datasource:

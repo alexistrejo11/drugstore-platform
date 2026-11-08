@@ -19,6 +19,8 @@ logging:
 spring:
   application:
     name: auth-service
+  profiles:
+    default: dev
   data:
     redis:
       url: ${REDIS_URL:redis://localhost:6379}

@@ -590,7 +590,7 @@ dockerFiles:
 
       # Create entrypoint script to fix mounted volume permissions
       RUN echo '#!/bin/sh' > /app/entrypoint.sh && \
-          echo 'exec su-exec spring:spring java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:-docker} -jar /app/app.jar "$@"' >> /app/entrypoint.sh && \
+          echo 'exec su-exec spring:spring java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:-prod} -jar /app/app.jar "$@"' >> /app/entrypoint.sh && \
           chmod +x /app/entrypoint.sh
 
       # Install su-exec for proper user switching
@@ -768,7 +768,7 @@ dockerFiles:
 
       # Create entrypoint script
       RUN echo '#!/bin/sh' > /app/entrypoint.sh && \
-          echo 'exec su-exec spring:spring java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:-docker} -jar /app/app.jar "$@"' >> /app/entrypoint.sh && \
+          echo 'exec su-exec spring:spring java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:-prod} -jar /app/app.jar "$@"' >> /app/entrypoint.sh && \
           chmod +x /app/entrypoint.sh
 
       # Install runtime utilities
@@ -888,7 +888,7 @@ dockerFiles:
 
       # Create entrypoint script
       RUN echo '#!/bin/sh' > /app/entrypoint.sh && \
-          echo 'exec su-exec spring:spring java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:-docker} -jar /app/app.jar "$@"' >> /app/entrypoint.sh && \
+          echo 'exec su-exec spring:spring java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:-prod} -jar /app/app.jar "$@"' >> /app/entrypoint.sh && \
           chmod +x /app/entrypoint.sh
 
       # Install su-exec
@@ -1043,7 +1043,7 @@ dockerFiles:
       ports: ["8086:8080"]
       environment:
         - SERVER_PORT=8080
-        - SPRING_PROFILES_ACTIVE=docker
+        - SPRING_PROFILES_ACTIVE=prod
   - service: "nginx"
     description: "Edge TLS/reverse proxy is provided by shared infra outside this monorepo (not bundled per service).
     content: |
@@ -1523,7 +1523,7 @@ metrics:
   - label: "Service Port"
     value: "8080 (compose)"
     icon: "server"
-    description: "HTTP inside Docker network when SPRING_PROFILES_ACTIVE=docker; optional standalone SSL profile may differ"
+    description: "HTTP inside Docker network when SPRING_PROFILES_ACTIVE=prod; optional standalone SSL profile may differ"
   - label: "Reverse Proxy"
     value: "Edge TLS/reverse proxy is provided by shared infra outside this monorepo (not bundled per service).
     icon: "nginx"
@@ -1879,7 +1879,7 @@ dockerFiles:
       context: .
       dockerfile: ./dockerfile
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=prod
       - SERVER_PORT=8080
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${DB_NAME:-product_db}
       - SPRING_DATA_REDIS_HOST=redis

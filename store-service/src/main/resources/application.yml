@@ -7,7 +7,7 @@ spring:
     name: store-service
 
   profiles:
-    active: dev
+    default: dev
 
   boot:
     admin:
@@ -54,9 +54,6 @@ management:
     web:
       exposure:
         include: "*"
-      cors:
-        allowed-origins: "*"
-        allowed-methods: "*"
   endpoint:
     health:
       show-details: always
@@ -126,6 +123,7 @@ app:
         durationSeconds: 60
 
 logging:
+  file:
     name: logs/store-service.log
     path: logs
   pattern:

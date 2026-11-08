@@ -28,7 +28,7 @@ spring:
   application:
     name: inventory-service
   profiles:
-    active: dev
+    default: dev
 
   data:
     redis:
@@ -97,9 +97,6 @@ management:
     web:
       exposure:
         include: health,info,metrics,env,prometheus
-      cors:
-        allowed-origins: "*"
-        allowed-methods: GET,OPTIONS
   endpoint:
     health:
       show-details: always

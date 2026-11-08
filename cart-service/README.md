@@ -35,8 +35,8 @@ It owns **shopping cart** persistence and behavior: line items, pricing context,
 
 ## Tech Stack
 
-- Java 23
-- Spring Boot 3.3.2
+- Java 25
+- Spring Boot 3.5.16
 - Spring Web, Spring Security, Spring Data JPA, Spring Data Redis, Spring Cache, Spring Kafka
 - PostgreSQL, Flyway
 - gRPC (Protobuf)
@@ -56,7 +56,8 @@ cart-service/
 │   │   ├── java/
 │   │   └── resources/
 │   │       ├── application.yml
-│   │       ├── application-docker.yml
+│   │       ├── application-dev.yml
+│   │       ├── application-prod.yml
 │   │       └── logback-spring.xml
 │   └── test/
 ├── Dockerfile
@@ -90,7 +91,7 @@ cart-service/
 
 Requirements:
 
-- Java 23
+- Java 25
 - PostgreSQL and Redis (or Docker Compose)
 
 ```bash

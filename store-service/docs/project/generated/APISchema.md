@@ -23,7 +23,7 @@ Twin of `docs/project/source/APISchema.md`: that file carries **structured YAML*
 
 ### Rate limiting (profiles)
 
-Configured under `app.rate-limit` in **`application.yml`** (dev) and **`application-docker.yml`** (containers). Annotation profiles:
+Configured under `app.rate-limit` in **`application.yml`** (dev) and **`application-prod.yml`** (containers). Annotation profiles:
 
 | Profile | Typical use in code | Docker YAML hint |
 |---------|---------------------|------------------|
@@ -68,7 +68,7 @@ Configured under `app.rate-limit` in **`application.yml`** (dev) and **`applicat
 | Method | Path | Notes |
 |--------|------|--------|
 | GET | `/actuator/health` | Healthcheck |
-| GET | `/actuator/prometheus` | Metrics (scoped in docker profile) |
+| GET | `/actuator/prometheus` | Metrics (scoped in prod profile) |
 | GET | `/v3/api-docs` | OpenAPI JSON |
 | GET | `/swagger-ui.html` | Swagger UI |
 
@@ -98,6 +98,6 @@ curl -sS "http://localhost:8080/api/v2/stores/by-code/STR-001"
 ## Highlighted risks
 
 - **Danger:** Anonymous GET exposes whatever fields `StoreResponse` returns — revise before production if sensitive.
-- **Danger:** Swagger “Try it out” disabled in docker profile — developers may enable insecurely on edge hosts.
+- **Danger:** Swagger “Try it out” disabled in prod profile — developers may enable insecurely on edge hosts.
 - **Missing:** Rate limits not applied to two PATCH routes; add for abuse parity.
-- **Important:** Separate **`JWT_SECRET`** vs **`JWT_SECRET_KEY`** between `application.yml` and `application-docker.yml` when switching profiles.
+- **Important:** Separate **`JWT_SECRET`** vs **`JWT_SECRET_KEY`** between `application.yml` and `application-prod.yml` when switching profiles.

@@ -49,7 +49,7 @@
 
 ### product-service service
 
-- `SPRING_PROFILES_ACTIVE=docker`
+- `SPRING_PROFILES_ACTIVE=prod`
 - `SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${DB_NAME:-product_db}`
 - `SPRING_DATA_REDIS_HOST=redis`
 - `SPRING_KAFKA_BOOTSTRAP_SERVERS` required from env

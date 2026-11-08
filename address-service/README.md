@@ -33,8 +33,8 @@ It owns user address management with secure, validated, and observable APIs for 
 - Redis-backed rate limiting with different sensitivity profiles.
 
 ## Tech Stack
-- Java 23
-- Spring Boot 3.3.2
+- Java 25
+- Spring Boot 3.5.16
 - Spring Web, Spring Security, Spring Data JPA
 - PostgreSQL 15
 - Redis 7
@@ -57,10 +57,11 @@ address-service/
 │   │   │   ├── config/            # Security, OpenAPI, rate-limit, etc.
 │   │   │   └── utils/             # DTOs, mappers, validation helpers
 │   │   └── resources/
-│   │       ├── application.yml
-│   │       ├── application-docker.yml
+│   │       ├── application.yml          # common config (defaults to dev)
+│   │       ├── application-dev.yml      # full Actuator, Hibernate show-sql
+│   │       ├── application-prod.yml     # hardened, Swagger off, minimal Actuator
 │   │       ├── logback-spring.xml
-│   │       └── db/migration/
+│   │       └── db/migration/            # Flyway schema migrations
 │   └── test/
 ├── Dockerfile
 ├── docker-compose.yml         # App-only; shared infra outside monorepo
@@ -96,7 +97,7 @@ address-service/
 
 ## Run Locally
 Requirements:
-- Java 23
+- Java 25
 - Docker + Docker Compose (recommended for full stack)
 
 Application only:
@@ -108,6 +109,17 @@ Run tests:
 ```bash
 ./gradlew test
 ```
+
+## Profiles
+
+Only two profiles exist. The profile is independent of the runtime (JAR, IDE, Compose):
+
+| Profile | Schema | Actuator | Hibernate SQL | Swagger |
+|---------|--------|----------|---------------|---------|
+| `dev` (default) | Flyway | `*` (all endpoints) | shown + formatted | enabled |
+| `prod` | Flyway | `health,info,prometheus` | disabled | disabled |
+
+Select it with `SPRING_PROFILES_ACTIVE=dev|prod`. Containers default to `prod`.
 
 ## Docker
 

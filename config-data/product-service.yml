@@ -7,7 +7,7 @@ spring:
     name: product-service
 
   profiles:
-    active: dev
+    default: dev
 
   boot:
     admin:

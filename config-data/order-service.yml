@@ -7,7 +7,7 @@ spring:
     name: order-service
 
   profiles:
-    active: dev
+    default: dev
   boot:
     admin:
       client:

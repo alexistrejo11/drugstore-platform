@@ -76,7 +76,7 @@ scalabilityStrategies:
   - title: "Stateless replicas behind Nginx"
     description: "Docker Compose scales `store-service` (`--scale`); Redis holds shared cache; Postgres is single writer (scale read replicas externally — **not configured here**)."
   - title: "HTTP compression (docker)"
-    description: "`application-docker.yml` enables gzip for JSON payloads above threshold."
+    description: "`application-prod.yml` enables gzip for JSON payloads above threshold."
 
 securityStrategies:
   - title: "JWT bearer + stateless session"

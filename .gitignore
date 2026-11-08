@@ -15,6 +15,9 @@
 # SSL Key
 **/keystore.p12
 
+# Local docker overrides
+**/docker-compose.prod.local.yml
+
 # Files
 **/.DS_Store
 Thumbs.db

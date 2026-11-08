@@ -1,24 +1,38 @@
--- V2__add_dummy_data.sql
--- Description: Insert dummy data for testing the address microservice
--- Author: E-commerce Team
--- Version: 1.0
+-- dummy_data.sql
+-- Optional seed data for local development. NOT a Flyway migration.
+--
+-- Apply manually against a database whose schema has already been migrated:
+--   psql "$DATABASE_URL" -f src/main/resources/db/seed/dummy_data.sql
+-- or inside Compose:
+--   docker compose exec -T postgres psql -U "$DB_USER" -d "$DB_NAME" \
+--     < src/main/resources/db/seed/dummy_data.sql
+--
+-- Re-running the script replaces the addresses of the seeded users only.
+
+BEGIN;
+
+DELETE FROM addresses
+WHERE user_id IN (
+    'CUST001', 'CUST002', 'CUST003', 'CUST004', 'CUST005', 'CUST006',
+    'EMP001', 'EMP002', 'EMP003'
+);
 
 -- Insert addresses for CUSTOMER users
 -- Customer 1: CUST001 (Regular customer with multiple addresses)
 INSERT INTO addresses (
-    user_id, 
-    user_type, 
-    street, 
-    city, 
-    state, 
-    country, 
-    postal_code, 
-    additional_details, 
-    is_default, 
+    user_id,
+    user_type,
+    street,
+    city,
+    state,
+    country,
+    postal_code,
+    additional_details,
+    is_default,
     active,
     created_at,
     updated_at
-) VALUES 
+) VALUES
 -- Customer 1 - Home address (default)
 (
     'CUST001', 'CUSTOMER',
@@ -47,7 +61,7 @@ INSERT INTO addresses (
 -- Customer 2: CUST002 (Customer with 3 addresses)
 INSERT INTO addresses (
     user_id, user_type, street, city, state, country, postal_code, additional_details, is_default, active, created_at
-) VALUES 
+) VALUES
 (
     'CUST002', 'CUSTOMER',
     '321 Oak Avenue', 'Los Angeles', 'CA', 'US', '90001',
@@ -67,7 +81,7 @@ INSERT INTO addresses (
 -- Customer 3: CUST003 (Customer with 5 addresses - max limit)
 INSERT INTO addresses (
     user_id, user_type, street, city, state, country, postal_code, additional_details, is_default, active, created_at
-) VALUES 
+) VALUES
 (
     'CUST003', 'CUSTOMER',
     '111 First Street', 'Chicago', 'IL', 'US', '60601',
@@ -97,7 +111,7 @@ INSERT INTO addresses (
 -- Customer 4: CUST004 (International customer)
 INSERT INTO addresses (
     user_id, user_type, street, city, state, country, postal_code, additional_details, is_default, active, created_at
-) VALUES 
+) VALUES
 (
     'CUST004', 'CUSTOMER',
     'Calle Gran Vía 28', 'Madrid', 'Madrid', 'ES', '28013',
@@ -117,7 +131,7 @@ INSERT INTO addresses (
 -- Customer 5: CUST005 (Canadian customer)
 INSERT INTO addresses (
     user_id, user_type, street, city, state, country, postal_code, additional_details, is_default, active, created_at
-) VALUES 
+) VALUES
 (
     'CUST005', 'CUSTOMER',
     '123 Queen Street', 'Toronto', 'ON', 'CA', 'M5H 2N2',
@@ -132,7 +146,7 @@ INSERT INTO addresses (
 -- Customer 6: CUST006 (UK customer)
 INSERT INTO addresses (
     user_id, user_type, street, city, state, country, postal_code, additional_details, is_default, active, created_at
-) VALUES 
+) VALUES
 (
     'CUST006', 'CUSTOMER',
     '221B Baker Street', 'London', 'Greater London', 'UK', 'NW1 6XE',
@@ -143,7 +157,7 @@ INSERT INTO addresses (
 -- Employee 1: EMP001 (Should only have 1 address per business rule)
 INSERT INTO addresses (
     user_id, user_type, street, city, state, country, postal_code, additional_details, is_default, active, created_at
-) VALUES 
+) VALUES
 (
     'EMP001', 'EMPLOYEE',
     '100 Corporate Drive', 'Austin', 'TX', 'US', '78701',
@@ -153,7 +167,7 @@ INSERT INTO addresses (
 -- Employee 2: EMP002 (Should only have 1 address)
 INSERT INTO addresses (
     user_id, user_type, street, city, state, country, postal_code, additional_details, is_default, active, created_at
-) VALUES 
+) VALUES
 (
     'EMP002', 'EMPLOYEE',
     '200 Innovation Way', 'Seattle', 'WA', 'US', '98101',
@@ -163,21 +177,21 @@ INSERT INTO addresses (
 -- Employee 3: EMP003 (Remote employee with international address)
 INSERT INTO addresses (
     user_id, user_type, street, city, state, country, postal_code, additional_details, is_default, active, created_at
-) VALUES 
+) VALUES
 (
     'EMP003', 'EMPLOYEE',
     'Av. Paulista 1000', 'São Paulo', 'SP', 'BR', '01310-100',
     'Conjunto 1501', TRUE, TRUE, NOW() - INTERVAL '45 days'
 );
 
--- Add some addresses that are inactive (soft-deleted) for testing
+-- Inactive (soft-deleted) addresses for testing
 INSERT INTO addresses (
     user_id, user_type, street, city, state, country, postal_code, additional_details, is_default, active, created_at, updated_at
-) VALUES 
+) VALUES
 (
     'CUST001', 'CUSTOMER',
     'Old Address 123', 'New York', 'NY', 'US', '10001',
-    NULL, FALSE, FALSE, 
+    NULL, FALSE, FALSE,
     NOW() - INTERVAL '1 year',
     NOW() - INTERVAL '6 months'
 ),
@@ -189,43 +203,4 @@ INSERT INTO addresses (
     NOW() - INTERVAL '4 months'
 );
 
--- Verify the data
--- Count addresses per user (should show max 5 for customers, 1 for employees)
-SELECT 
-    user_id,
-    user_type,
-    COUNT(*) as address_count,
-    SUM(CASE WHEN is_default THEN 1 ELSE 0 END) as default_count
-FROM addresses
-WHERE active = true
-GROUP BY user_id, user_type
-ORDER BY user_type, user_id;
-
--- Show all active addresses
-SELECT 
-    id,
-    user_id,
-    user_type,
-    CONCAT(street, ', ', city, ', ', state, ' ', postal_code, ', ', country) as full_address,
-    is_default,
-    created_at
-FROM addresses
-WHERE active = true
-ORDER BY user_id, is_default DESC, created_at DESC;
-
--- Show summary statistics
-SELECT 
-    user_type,
-    COUNT(DISTINCT user_id) as total_users,
-    COUNT(*) as total_addresses,
-    AVG(address_count) as avg_addresses_per_user
-FROM (
-    SELECT 
-        user_id,
-        user_type,
-        COUNT(*) as address_count
-    FROM addresses
-    WHERE active = true
-    GROUP BY user_id, user_type
-) user_stats
-GROUP BY user_type;
+COMMIT;

@@ -195,7 +195,7 @@ dockerFiles:
 
       # Create entrypoint script to fix mounted volume permissions
       RUN echo '#!/bin/sh' > /app/entrypoint.sh && \
-          echo 'exec su-exec spring:spring java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:-docker} -jar /app/app.jar "$@"' >> /app/entrypoint.sh && \
+          echo 'exec su-exec spring:spring java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:-prod} -jar /app/app.jar "$@"' >> /app/entrypoint.sh && \
           chmod +x /app/entrypoint.sh
 
       # Install su-exec for proper user switching

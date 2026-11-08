@@ -5,6 +5,8 @@ server:
 spring:
   application:
     name: notification-service
+  profiles:
+    default: dev
 
   data:
     mongodb:

@@ -484,7 +484,7 @@ features:
         icon: "trace"
     codeSnippet:
       language: "yaml"
-      filename: "application-docker.yml"
+      filename: "application-prod.yml"
       code: |
         management:
           endpoints:

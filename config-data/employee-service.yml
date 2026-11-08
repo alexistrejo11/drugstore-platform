@@ -7,7 +7,7 @@ spring:
     name: employee-service
 
   profiles:
-    active: dev
+    default: dev
   boot:
     admin:
       client:

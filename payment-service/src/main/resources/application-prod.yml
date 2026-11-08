@@ -1,16 +1,16 @@
+# Production profile — containers and hardened deployments.
+# Minimal Actuator surface, Swagger off by default, SQL logging off.
+
 server:
   port: ${PAYMENT_SERVICE_PORT}
   forward-headers-strategy: native
-
 spring:
   application:
     name: payment-service
-
   boot:
     admin:
       client:
         enabled: false
-
   datasource:
     url: ${DATASOURCE_URL:jdbc:postgresql://postgres:5432/drugstore_payments}
     username: ${DB_USER}
@@ -23,7 +23,6 @@ spring:
       connection-timeout: 20000
       idle-timeout: 300000
       max-lifetime: 1200000
-
   jpa:
     hibernate:
       ddl-auto: validate
@@ -31,12 +30,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
+        format_sql: false
         jdbc:
           batch_size: 20
         order_inserts: true
         order_updates: true
-
+        show_sql: false
   flyway:
     enabled: true
     baseline-on-migrate: true
@@ -47,7 +46,6 @@ spring:
     encoding: UTF-8
     table: flyway_schema_history
     clean-disabled: true
-
   data:
     redis:
       url: ${REDIS_URL:redis://redis:6379}
@@ -57,43 +55,59 @@ spring:
           max-active: ${REDIS_POOL_MAX_ACTIVE:20}
           max-idle: ${REDIS_POOL_MAX_IDLE:10}
           min-idle: ${REDIS_POOL_MIN_IDLE:5}
-
 stripe:
   api-key: ${STRIPE_API_KEY}
   webhook-secret: ${STRIPE_WEBHOOK_SECRET}
-
 springdoc:
   api-docs:
     path: /v3/api-docs
-    enabled: ${SWAGGER_ENABLED:true}
+    enabled: ${SWAGGER_ENABLED:false}
   swagger-ui:
     path: /swagger-ui.html
-    enabled: ${SWAGGER_ENABLED:true}
+    enabled: ${SWAGGER_ENABLED:false}
     operations-sorter: method
     tags-sorter: alpha
     display-request-duration: true
-
+    try-it-out-enabled: false
 management:
   endpoints:
     web:
       exposure:
         include: health,info,prometheus
+      base-path: /actuator
   endpoint:
     prometheus:
       enabled: true
+    health:
+      show-details: ${MANAGEMENT_HEALTH_DETAILS:never}
+      show-components: never
+      probes:
+        enabled: true
+    env:
+      enabled: false
+    loggers:
+      enabled: false
   metrics:
     export:
       prometheus:
         enabled: true
-
+    tags:
+      environment: production
+  info:
+    env:
+      enabled: false
 app:
   redis:
     key-prefix: ${REDIS_KEY_PREFIX:drugstore:payment:}
-
 logging:
   level:
-    root: ${LOG_LEVEL_ROOT:INFO}
-    io.github.alexisTrejo11.drugstore.payments: ${LOG_LEVEL_APP:DEBUG}
+    root: ${LOG_LEVEL_ROOT:WARN}
+    io.github.alexisTrejo11.drugstore.payments: ${LOG_LEVEL_APP:INFO}
     org.hibernate.SQL: ${LOG_LEVEL_HIBERNATE:WARN}
-    org.springframework.web: ${LOG_LEVEL_SPRING_WEB:INFO}
-    com.stripe: WARN
+    org.springframework.web: ${LOG_LEVEL_SPRING_WEB:WARN}
+    com.stripe: ${LOG_LEVEL_STRIPE:WARN}
+    io.github.alexisTrejo11.drugstore: ${LOG_LEVEL_APP:INFO}
+    org.springframework.security: ${LOG_LEVEL_SPRING_SECURITY:WARN}
+    org.hibernate: ${LOG_LEVEL_HIBERNATE:WARN}
+    libs_kernel.log.audit: ${LOG_LEVEL_AUDIT:INFO}
+    com.ecommerce.payment: ${LOG_LEVEL_APP:INFO}

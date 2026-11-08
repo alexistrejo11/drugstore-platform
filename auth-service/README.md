@@ -22,7 +22,7 @@ It centralizes **authentication and authorization**: JWT access and refresh flow
 - **Service name:** `auth-service`
 - **Role in platform:** Identity and token issuance for the rest of the ecosystem.
 - **Main responsibility:** Authenticate users, issue and validate JWTs, coordinate with user-service, publish auth-related events.
-- **Protocols:** REST (HTTP locally, HTTPS in Docker profile), Kafka producers, gRPC client to users.
+- **Protocols:** REST (HTTP locally, HTTPS in prod profile), Kafka producers, gRPC client to users.
 - **Persistence:** Delegated to user-service and Redis for session-oriented state where applicable.
 
 ## Core Capabilities
@@ -36,8 +36,8 @@ It centralizes **authentication and authorization**: JWT access and refresh flow
 
 ## Tech Stack
 
-- Java 23
-- Spring Boot 3.3.2
+- Java 25
+- Spring Boot 3.5.16
 - Spring Web, Spring Security, Spring Data Redis, Spring Kafka, OAuth2 client
 - gRPC + Protobuf
 - JJWT
@@ -56,7 +56,8 @@ auth-service/
 │   │   ├── java/                  # Controllers, security, Kafka, gRPC clients
 │   │   └── resources/
 │   │       ├── application.yml
-│   │       ├── application-docker.yml
+│   │       ├── application-dev.yml
+│   │       ├── application-prod.yml
 │   │       └── logback-spring.xml
 │   └── test/
 ├── Dockerfile
@@ -82,7 +83,7 @@ auth-service/
 
 ## Observability
 
-- Actuator exposes health, info, and Prometheus metrics (see `application-docker.yml`).
+- Actuator exposes health, info, and Prometheus metrics (see `application-prod.yml`).
 - Logs go to stdout; Promtail (shared infra) ships them to Loki.
 - Metrics/logs go to the shared observability stack outside this monorepo.
 
@@ -91,7 +92,7 @@ auth-service/
 
 Requirements:
 
-- Java 23
+- Java 25
 - Docker + Docker Compose (recommended for Redis and full stack)
 
 Application only:

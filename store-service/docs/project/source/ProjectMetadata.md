@@ -27,7 +27,7 @@ updatedAt: "2026-05-06T00:00:00.000Z"
 # Project Metadata
 
 > [!danger] Dev `application.yml` drift  
-> Default **dev** profile still names the app `product-service`, points JDBC at **`product_DB` / drugstore_products**, and logs to `products-service.log`. Prefer **`spring.profiles.active=docker`** or align `application.yml` with store DB names or local runs will hit the wrong database.
+> Default **dev** profile still names the app `product-service`, points JDBC at **`product_DB` / drugstore_products**, and logs to `products-service.log`. Prefer **`spring.profiles.active=prod`** or align `application.yml` with store DB names or local runs will hit the wrong database.
 
 > [!warning] Secrets in repo history  
 > `application.yml` contains a **hardcoded Postgres password** placeholder pattern; rotate credentials and use env-only secrets in shared environments.

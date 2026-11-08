@@ -133,7 +133,7 @@ dockerFiles:
       context: .
       dockerfile: ./dockerfile
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=prod
       - SERVER_PORT=8080
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${DB_NAME:-product_db}
       - SPRING_DATA_REDIS_HOST=redis

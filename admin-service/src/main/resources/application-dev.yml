@@ -1,0 +1,16 @@
+# Development profile — local work: full Actuator and debug logging.
+# Active by default through spring.profiles.default in application.yml.
+
+logging:
+  level:
+    root: INFO
+    de.codecentric: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

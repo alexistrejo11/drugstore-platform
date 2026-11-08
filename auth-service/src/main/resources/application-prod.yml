@@ -1,47 +1,16 @@
+# Production profile — containers and hardened deployments.
+# Minimal Actuator surface, Swagger off by default, SQL logging off.
+
 server:
-  port: ${CART_SERVICE_PORT}
-  forward-headers-strategy: native
+  port: ${AUTH_SERVICE_PORT}
   compression:
     enabled: true
     mime-types: application/json,application/xml,text/html,text/xml,text/plain
     min-response-size: 2048
-
+  forward-headers-strategy: native
 spring:
   application:
-    name: cart-service
-  datasource:
-    url: ${DATASOURCE_URL:jdbc:postgresql://postgres:5432/cart_db}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
-    driver-class-name: org.postgresql.Driver
-    hikari:
-      maximum-pool-size: ${DB_MAX_POOL_SIZE:20}
-      minimum-idle: ${DB_MIN_IDLE:5}
-      connection-timeout: 30000
-      idle-timeout: 600000
-      max-lifetime: 1800000
-  flyway:
-    enabled: true
-    baseline-on-migrate: true
-    baseline-version: 0
-    locations: classpath:db/migration
-    validate-on-migrate: true
-    out-of-order: false
-    encoding: UTF-8
-    table: flyway_schema_history
-    clean-disabled: true
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: false
-        show_sql: false
-        jdbc:
-          batch_size: 20
-    show-sql: false
-    open-in-view: false
+    name: auth-service
   data:
     redis:
       url: ${REDIS_URL:redis://redis:6379}
@@ -51,6 +20,8 @@ spring:
           max-active: ${REDIS_POOL_MAX_ACTIVE:20}
           max-idle: ${REDIS_POOL_MAX_IDLE:10}
           min-idle: ${REDIS_POOL_MIN_IDLE:5}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:kafka-1:9092,kafka-2:9092,kafka-3:9092}
   cloud:
     config:
       enabled: ${CONFIG_SERVER_ENABLED:false}
@@ -60,18 +31,11 @@ spring:
         max-attempts: 3
         initial-interval: 1000
         multiplier: 1.5
-  kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
-    consumer:
-      group-id: ${KAFKA_CONSUMER_GROUP_ID:cart-service-group}
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring.json.trusted.packages: "*"
-        spring.json.value.default.type: io.github.alexisTrejo11.drugstore.carts.product.core.application.events.ProductEvent
-    listener:
-      missing-topics-fatal: false
-
+grpc:
+  client:
+    user-service:
+      host: ${GRPC_CLIENT_USER_SERVICE_HOST:user-service}
+      port: ${GRPC_CLIENT_USER_SERVICE_PORT:9090}
 springdoc:
   api-docs:
     enabled: ${SWAGGER_ENABLED:false}
@@ -81,16 +45,14 @@ springdoc:
     path: /swagger-ui.html
     disable-swagger-default-url: true
     try-it-out-enabled: false
-
 jwt:
   secret: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: ${JWT_ACCESS_TOKEN_EXPIRATION_MINUTES:15}
   refresh-token-expiration-minutes: ${JWT_REFRESH_TOKEN_EXPIRATION_MINUTES:43200}
   issuer: ${JWT_ISSUER:drugstore-prod}
-
 app:
   redis:
-    key-prefix: ${REDIS_KEY_PREFIX:drugstore:cart:}
+    key-prefix: ${REDIS_KEY_PREFIX:drugstore:auth:}
   rate-limit:
     global:
       enabled: true
@@ -115,10 +77,9 @@ app:
       customer-read:
         maxRequests: ${RATE_LIMIT_CUSTOMER_READ:100}
         durationSeconds: 60
-
 logging:
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n'
   level:
     root: ${LOG_LEVEL_ROOT:WARN}
     io.github.alexisTrejo11.drugstore: ${LOG_LEVEL_APP:INFO}
@@ -126,28 +87,36 @@ logging:
     org.springframework.security: ${LOG_LEVEL_SPRING_SECURITY:WARN}
     org.hibernate: ${LOG_LEVEL_HIBERNATE:WARN}
     libs_kernel.log.audit: ${LOG_LEVEL_AUDIT:INFO}
-
+    microservice.auth: ${LOG_LEVEL_APP:INFO}
+    org.springframework.boot.autoconfigure: ${LOG_LEVEL_SPRING_BOOT:WARN}
 audit:
   log:
     enabled: true
     excluded-endpoints: /actuator/health, /actuator/info, /actuator/metrics, /actuator/prometheus
     detailed: ${AUDIT_DETAILED:false}
-
 management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,prometheus
+        include: health,info,prometheus
       base-path: /actuator
   endpoint:
     health:
       show-details: ${MANAGEMENT_HEALTH_DETAILS:never}
       probes:
         enabled: true
+      show-components: never
+    env:
+      enabled: false
+    loggers:
+      enabled: false
   metrics:
     export:
       prometheus:
         enabled: true
     tags:
-      application: cart-service
+      application: auth-service
       environment: production
+  info:
+    env:
+      enabled: false

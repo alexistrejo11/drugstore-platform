@@ -34,8 +34,8 @@ It owns **employee** domain data and APIs: profiles, assignments, and integratio
 
 ## Tech Stack
 
-- Java 23
-- Spring Boot 3.3.2
+- Java 25
+- Spring Boot 3.5.16
 - Spring Web, Spring Security, Spring Data JPA, Spring Data Redis, Spring Kafka
 - PostgreSQL, Flyway
 - Spring Cloud Config (bootstrap) when enabled
@@ -55,7 +55,8 @@ employee-service/
 │   │   ├── java/
 │   │   └── resources/
 │   │       ├── application.yml
-│   │       ├── application-docker.yml
+│   │       ├── application-dev.yml
+│   │       ├── application-prod.yml
 │   │       └── logback-spring.xml
 │   └── test/
 ├── Dockerfile
@@ -87,7 +88,7 @@ employee-service/
 ## Run Locally
 
 Requirements:
-- Java 23
+- Java 25
 - Docker + Docker Compose (recommended for full stack)
 
 Application only:

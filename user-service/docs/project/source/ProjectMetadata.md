@@ -17,7 +17,7 @@ techStack:
   - "PostgreSQL"
   - "Redis (Spring Data Redis + cache)"
   - "Apache Kafka (Spring Kafka)"
-  - "Flyway (enabled in docker profile YAML when corrected)"
+  - "Flyway (enabled in prod profile YAML when corrected)"
   - "grpc-java 1.60.0 + protobuf 3.25.1"
   - "JJWT 0.11.5"
   - "SpringDoc OpenAPI 2.6.0"
@@ -34,7 +34,7 @@ updatedAt: "2026-05-06T00:00:00.000Z"
 ## Notes (important / dangerous / missing)
 
 1. **Dockerfile matches Java 23** — Builder and runtime use Temurin 23 (`eclipse-temurin:23-jdk-noble` / `23-jre-alpine`). Older docs mentioning OpenJDK 17 are **obsolete** for this module.
-2. **`application-docker.yml` drift** — Contains **store-service** naming and defaults. Treat as **broken for user-service** until realigned (DB, app name, springdoc scan, management tags).
+2. **`application-prod.yml` drift** — Contains **store-service** naming and defaults. Treat as **broken for user-service** until realigned (DB, app name, springdoc scan, management tags).
 3. **OpenAPI** — `packages-to-scan` references `...drugstore.stores`; user controllers live under `...drugstore.users`. **Missing / wrong** for first-class API docs.
 4. **gRPC** — Proto + `UserGrpcServer` **implemented** but **no server startup** bean; inter-service RPC is **not operational** from this artifact alone.
 5. **CQRS-style buses** — `CommandBus` / `QueryBus` mediate writes and reads (structured hexagonal layering).

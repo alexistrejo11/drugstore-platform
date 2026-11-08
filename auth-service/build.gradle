@@ -1,8 +1,8 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.3.2'
-	id 'io.spring.dependency-management' version '1.1.6'
-	id 'com.google.protobuf' version '0.9.4'
+	id 'org.springframework.boot' version '3.5.16'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id 'com.google.protobuf' version '0.9.6'
 }
 
 def loadDotEnv = {
@@ -33,7 +33,7 @@ version = '2.0.0'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(23)
+		languageVersion = JavaLanguageVersion.of(25)
 	}
 }
 
@@ -53,7 +53,7 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2023.0.3")
+	set('springCloudVersion', "2025.0.3")
 	set('grpcVersion', "1.60.0")
 	set('protobufVersion', "3.25.1")
 }
@@ -114,7 +114,7 @@ dependencies {
 	implementation 'io.micrometer:micrometer-registry-prometheus'
 
 	// Swagger
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.17'
 
 	// TOTP (Google Authenticator–compatible)
 	implementation 'com.warrenstrange:googleauth:1.5.0'
@@ -177,6 +177,10 @@ bootRun {
     ]
 
 	dotEnv.each { key, value ->
+		// .env pins the profile for Compose; bootRun uses spring.profiles.default (dev).
+		if (key == 'SPRING_PROFILES_ACTIVE') {
+			return
+		}
 		systemProperty key, value
 		environment key, value
 	}

@@ -1,0 +1,51 @@
+# Development profile — local work: full Actuator, verbose SQL, Swagger on.
+# Active by default through spring.profiles.default in application.yml.
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    try-it-out-enabled: true
+
+logging:
+  level:
+    root: INFO
+    io.github.alexisTrejo11.drugstore: DEBUG
+    microservice.auth: DEBUG
+    org.springframework.boot.autoconfigure: DEBUG
+    org.springframework.web: DEBUG
+    libs_kernel.log.audit: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+        allowed-methods: "*"
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+    info:
+      enabled: true
+    metrics:
+      enabled: true
+    env:
+      enabled: true
+    loggers:
+      enabled: true
+  info:
+    env:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      environment: development
+  tracing:
+    sampling:
+      probability: 1.0

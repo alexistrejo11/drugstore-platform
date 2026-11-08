@@ -388,15 +388,15 @@ def render_architecture(documents: list[SourceDocument]) -> str:
 
 
 PLATFORM_DESCRIPTION = (
-    "Multi-service drugstore e-commerce platform built with Java 23 and Spring Boot. "
+    "Multi-service drugstore e-commerce platform built with Java 25 and Spring Boot. "
     "Eleven bounded contexts (auth, users, catalog, cart, orders, payments, inventory, "
     "stores, addresses, employees, notifications) communicate via REST, gRPC, and "
     "message buses — backed by PostgreSQL, Redis, and observability tooling."
 )
 
 PLATFORM_TECH_STACK = [
-    "Java 23",
-    "Spring Boot 3.3+",
+    "Java 25",
+    "Spring Boot 3.5+",
     "Spring Data JPA + Flyway",
     "PostgreSQL 15",
     "Redis 7",

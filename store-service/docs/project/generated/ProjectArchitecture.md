@@ -39,7 +39,7 @@ Plain-Markdown counterpart to `docs/project/source/ProjectArchitecture.md` (diag
 ## Scalability & reliability
 
 - **Horizontal:** Multiple `store-service` replicas behind Nginx; shared Redis for cache coherence.
-- **Database:** Single Postgres instance in compose; production would add replicas / connection pool tuning (`application-docker.yml` Hikari settings).
+- **Database:** Single Postgres instance in compose; production would add replicas / connection pool tuning (`application-prod.yml` Hikari settings).
 - **Not implemented:** Read replicas, saga outbox, idempotency keys for commands.
 
 ---
