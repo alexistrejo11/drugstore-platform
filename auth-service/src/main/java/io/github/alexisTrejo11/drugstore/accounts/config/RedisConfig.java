@@ -9,8 +9,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,13 +37,15 @@ public class RedisConfig {
     RedisTemplate<String, Object> template = new RedisTemplate<>();
     template.setConnectionFactory(connectionFactory);
 
-    // Configure ObjectMapper for proper Java 8 date/time serialization
+    // Records/value objects are final — NON_FINAL typing skips type ids on write and
+    // then fails on read as Object (expects WRAPPER_ARRAY). Use EVERYTHING + PROPERTY.
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JavaTimeModule());
     objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     objectMapper.activateDefaultTyping(
-        objectMapper.getPolymorphicTypeValidator(),
-        ObjectMapper.DefaultTyping.NON_FINAL);
+        BasicPolymorphicTypeValidator.builder().allowIfBaseType(Object.class).build(),
+        ObjectMapper.DefaultTyping.EVERYTHING,
+        JsonTypeInfo.As.PROPERTY);
 
     // Use String serializer for keys
     PrefixedStringRedisSerializer keySerializer = new PrefixedStringRedisSerializer(redisProperties);

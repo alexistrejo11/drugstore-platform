@@ -98,7 +98,11 @@ public class UserQueryManagerController {
     Page<UserQueryResult> queryResultPage = queryBus.execute(query);
 
     var userHTTPResponses = queryResultPage.map(UserHTTPResponse::from).stream().toList();
-    var metadata = new PaginationMetadata(queryResultPage.getTotalElements(), queryResultPage.getNumber(), queryResultPage.getSize());
+    // Spring Page.getNumber() is 0-based; PaginationMetadata expects 1-based currentPage.
+    var metadata = new PaginationMetadata(
+        queryResultPage.getTotalElements(),
+        queryResultPage.getNumber() + 1,
+        queryResultPage.getSize());
 
     return ResponseWrapper.success(new PageResponse<>(userHTTPResponses, metadata), "Users retrieved successfully");
   }
@@ -118,7 +122,11 @@ public class UserQueryManagerController {
     Page<UserQueryResult> queryResultPage = queryBus.execute(query);
 
     var userHTTPResponses = queryResultPage.map(UserHTTPResponse::from).stream().toList();
-    var metadata = new PaginationMetadata(queryResultPage.getTotalElements(), queryResultPage.getNumber(), queryResultPage.getSize());
+    // Spring Page.getNumber() is 0-based; PaginationMetadata expects 1-based currentPage.
+    var metadata = new PaginationMetadata(
+        queryResultPage.getTotalElements(),
+        queryResultPage.getNumber() + 1,
+        queryResultPage.getSize());
 
     return ResponseWrapper.success(new PageResponse<>(userHTTPResponses, metadata), "Users retrieved successfully");
   }

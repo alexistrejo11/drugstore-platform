@@ -24,10 +24,10 @@ import java.util.Map;
 @Configuration
 public class KafkaConfig {
 
-  @Value("${spring.kafka.bootstrap-servers}")
+  @Value("${spring.kafka.bootstrap-servers:localhost:9092}")
   private String bootstrapServers;
 
-  @Value("${spring.kafka.consumer.group-id}")
+  @Value("${spring.kafka.consumer.group-id:cart-service-group}")
   private String groupId;
 
   @Bean

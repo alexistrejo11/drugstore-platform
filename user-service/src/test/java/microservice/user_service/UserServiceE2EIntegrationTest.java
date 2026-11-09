@@ -264,7 +264,7 @@ class UserServiceE2EIntegrationTest {
     String token = Jwts.builder()
         .setId(UUID.randomUUID().toString())
         .setSubject(userId)
-        .setIssuer("test-suite")
+        .setIssuer("test-issuer")
         .setIssuedAt(issuedAt)
         .setExpiration(expiration)
         .claim("userId", userId)

@@ -40,8 +40,9 @@ public class CartModelTest {
     assertThat(cartModel).isNotNull();
     assertThat(cartModel.getId()).isNull();
     assertThat(cartModel.getCustomerId()).isNull();
-    assertThat(cartModel.getCartItems()).isNull();
-    assertThat(cartModel.getAfterwardItems()).isNull();
+    // Field initializers create empty lists (not null) on the no-arg constructor.
+    assertThat(cartModel.getCartItems()).isEmpty();
+    assertThat(cartModel.getAfterwardItems()).isEmpty();
   }
 
   @Test

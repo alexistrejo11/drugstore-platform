@@ -42,6 +42,7 @@ public class CartModelMapperTest {
     // Given
     Cart domain = createTestDomainCart();
     when(itemMapper.toModels(anyList())).thenReturn(Collections.emptyList());
+    when(itemMapper.toAfterwardsModels(anyList())).thenReturn(Collections.emptyList());
 
     // When
     CartModel result = cartModelMapper.toModel(domain);
@@ -68,9 +69,8 @@ public class CartModelMapperTest {
   void toDomain_WithValidModel_ReturnsCart() {
     // Given
     CartModel model = createTestCartModel();
-    when(itemMapper.toDomains(anyList())).thenReturn(Collections.emptyList());
 
-    // When
+    // When (includeItems/afterwards false → itemMapper is not used)
     Cart result = cartModelMapper.toDomain(model, false, false);
 
     // Then
@@ -96,6 +96,7 @@ public class CartModelMapperTest {
     // Given
     List<Cart> domains = List.of(createTestDomainCart(), createTestDomainCart());
     when(itemMapper.toModels(anyList())).thenReturn(Collections.emptyList());
+    when(itemMapper.toAfterwardsModels(anyList())).thenReturn(Collections.emptyList());
 
     // When
     List<CartModel> result = cartModelMapper.toModels(domains);
@@ -119,9 +120,8 @@ public class CartModelMapperTest {
   void toDomains_WithValidModelList_ReturnsCartList() {
     // Given
     List<CartModel> models = List.of(createTestCartModel(), createTestCartModel());
-    when(itemMapper.toDomains(anyList())).thenReturn(Collections.emptyList());
 
-    // When
+    // When (includeItems/afterwards false → itemMapper is not used)
     List<Cart> result = cartModelMapper.toDomains(models, false, false);
 
     // Then
@@ -144,7 +144,7 @@ public class CartModelMapperTest {
     // Given
     Cart originalDomain = createTestDomainCart();
     when(itemMapper.toModels(anyList())).thenReturn(Collections.emptyList());
-    when(itemMapper.toDomains(anyList())).thenReturn(Collections.emptyList());
+    when(itemMapper.toAfterwardsModels(anyList())).thenReturn(Collections.emptyList());
 
     // When
     CartModel model = cartModelMapper.toModel(originalDomain);

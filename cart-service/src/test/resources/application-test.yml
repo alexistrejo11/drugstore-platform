@@ -13,6 +13,8 @@ spring:
     show-sql: false
   flyway:
     enabled: false
+  cache:
+    type: none
   data:
     redis:
       url: redis://localhost:6379
@@ -21,11 +23,19 @@ spring:
       enabled: false
   kafka:
     bootstrap-servers: localhost:9092
+    consumer:
+      group-id: cart-service-test
     listener:
       missing-topics-fatal: false
+      auto-startup: false
 
 server:
   port: 0
+
+# Avoid clashing with whatever is already bound on the host (often 9090/9091).
+grpc:
+  server:
+    port: 0
 
 jwt:
   secret: test-secret-key-must-be-at-least-32-bytes-long

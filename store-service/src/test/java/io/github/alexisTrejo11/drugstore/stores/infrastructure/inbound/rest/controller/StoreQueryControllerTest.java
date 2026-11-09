@@ -2,6 +2,7 @@ package io.github.alexisTrejo11.drugstore.stores.infrastructure.inbound.rest.con
 
 import io.github.alexisTrejo11.drugstore.stores.config.log.AuditLogger;
 import io.github.alexisTrejo11.drugstore.stores.config.security.ApiSecurityResponseWriter;
+import io.github.alexisTrejo11.drugstore.stores.config.security.JwtAuthenticationFilter;
 import io.github.alexisTrejo11.drugstore.stores.config.security.JwtTokenValidator;
 import io.github.alexisTrejo11.drugstore.stores.infrastructure.inbound.rest.mapper.StoreResponseMapper;
 import libs_kernel.page.PageResponse;
@@ -38,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = StoreQueryController.class, properties = "spring.cloud.config.enabled=false")
 @Import({
         ApiSecurityResponseWriter.class,
+        JwtAuthenticationFilter.class,
         SecurityConfig.class
 })
 @ActiveProfiles("test")

@@ -4,6 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.alexisTrejo11.drugstore.stores.application.port.in.query.StoreOperationResult;
 import io.github.alexisTrejo11.drugstore.stores.application.port.in.usecase.StoreCommandUseCases;
 import io.github.alexisTrejo11.drugstore.stores.application.port.in.query.CreateStoreResult;
+import io.github.alexisTrejo11.drugstore.stores.config.log.AuditLogger;
+import io.github.alexisTrejo11.drugstore.stores.config.security.ApiSecurityResponseWriter;
+import io.github.alexisTrejo11.drugstore.stores.config.security.JwtAuthenticationFilter;
+import io.github.alexisTrejo11.drugstore.stores.config.security.JwtTokenValidator;
+import io.github.alexisTrejo11.drugstore.stores.config.security.SecurityConfig;
 import io.github.alexisTrejo11.drugstore.stores.domain.model.enums.StoreStatus;
 import io.github.alexisTrejo11.drugstore.stores.domain.model.valueobjects.StoreCode;
 import io.github.alexisTrejo11.drugstore.stores.domain.model.valueobjects.StoreID;
@@ -12,10 +17,6 @@ import io.github.alexisTrejo11.drugstore.stores.infrastructure.inbound.rest.dto.
 import io.github.alexisTrejo11.drugstore.stores.infrastructure.inbound.rest.dto.request.GeolocationRequest;
 import io.github.alexisTrejo11.drugstore.stores.infrastructure.inbound.rest.dto.request.ScheduleInsertRequest;
 import io.github.alexisTrejo11.drugstore.stores.infrastructure.inbound.rest.dto.request.StoreContactInfoRequest;
-import libs_kernel.security.ApiSecurityResponseWriter;
-import libs_kernel.security.jwt.JwtTokenValidator;
-import io.github.alexisTrejo11.drugstore.stores.config.security.RestAuthenticationEntryPoint;
-import io.github.alexisTrejo11.drugstore.stores.config.security.SecurityConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import libs_kernel.log.audit.AuditLogger;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -38,8 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = StoreCommandController.class, properties = "spring.cloud.config.enabled=false")
 @Import({
         ApiSecurityResponseWriter.class,
-        RestAuthenticationEntryPoint.class,
-        RestAccessDeniedHandler.class,
+        JwtAuthenticationFilter.class,
         SecurityConfig.class
 })
 @ActiveProfiles("test")

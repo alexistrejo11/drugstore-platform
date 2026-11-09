@@ -3,6 +3,7 @@ package io.github.alexisTrejo11.drugstore.users.config.redis;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -51,6 +52,7 @@ public class RedisConfig {
 
 
     @Bean
+    @ConditionalOnProperty(name = "spring.cache.type", havingValue = "redis", matchIfMissing = true)
     public CacheManager cacheManager(
         RedisConnectionFactory connectionFactory,
         RedisProperties redisProperties) {

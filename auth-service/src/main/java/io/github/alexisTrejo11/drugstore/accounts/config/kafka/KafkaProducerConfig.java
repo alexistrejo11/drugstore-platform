@@ -4,18 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.ser.std.StringSerializer;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class KafkaProducerConfig {
@@ -47,15 +44,6 @@ public class KafkaProducerConfig {
 
   @Value("${spring.kafka.producer.enable-idempotence:true}")
   private Boolean enableIdempotence;
-
-  @Bean
-  public ObjectMapper objectMapper() {
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(new JavaTimeModule());
-    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-    mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-    return mapper;
-  }
 
   @Bean
   public Map<String, Object> producerConfigs() {

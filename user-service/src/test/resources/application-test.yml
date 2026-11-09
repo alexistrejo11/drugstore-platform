@@ -21,9 +21,16 @@ spring:
   kafka:
     listener:
       auto-startup: false
+  # Avoid hitting a local/password-protected Redis; repository uses @Cacheable.
+  cache:
+    type: none
   data:
     redis:
       url: redis://localhost:6379
+  boot:
+    admin:
+      client:
+        enabled: false
 
 server:
   port: 0

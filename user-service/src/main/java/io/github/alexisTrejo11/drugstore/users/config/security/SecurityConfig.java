@@ -16,12 +16,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+	private final ApiSecurityResponseWriter securityResponseWriter;
 
 
 	@Autowired
 	public SecurityConfig(
-			JwtAuthenticationFilter jwtAuthenticationFilter) {
+			JwtAuthenticationFilter jwtAuthenticationFilter,
+			ApiSecurityResponseWriter securityResponseWriter) {
 		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+		this.securityResponseWriter = securityResponseWriter;
 	}
 
 	/**
@@ -69,6 +72,13 @@ public class SecurityConfig {
 						.anyRequest().denyAll())
 				.formLogin(AbstractHttpConfigurer::disable)
 				.httpBasic(AbstractHttpConfigurer::disable)
+				.exceptionHandling(ex -> ex
+						.authenticationEntryPoint((request, response, authException) ->
+								securityResponseWriter.writeUnauthorized(
+										response, "Authentication required", authException.getMessage()))
+						.accessDeniedHandler((request, response, accessDeniedException) ->
+								securityResponseWriter.writeForbidden(
+										response, "Access denied", accessDeniedException.getMessage())))
 				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();

@@ -1,14 +1,4 @@
-# Address Service CI — build, test, publish to GHCR, deploy over Cloudflare SSH.
-#
-# Required repository Secrets (Settings → Secrets and variables → Actions):
-#   SSH_HOST                      — hostname reachable via Cloudflare Access (SSH)
-#   SSH_USER                      — SSH user on the deploy host
-#   SSH_PRIVATE_KEY               — private key for that user
-#   CF_CLIENT_ID                  — Cloudflare Access service-token client id
-#   CF_CLIENT_SECRET              — Cloudflare Access service-token client secret
-#   GHCR_TOKEN                    — token with read:packages (pull on deploy host)
-#   GHCR_USER                     — optional; defaults to repository owner
-#   DRUGSTORE_ADDRESS_DEPLOY_PATH — remote dir with compose / Makefile (make refresh)
+# Address Service CI — build, test, publish to GHCR.
 name: Address Service CI
 
 on:
@@ -38,12 +28,3 @@ jobs:
     with:
       service: address-service
       enable_publish: true
-    secrets:
-      SSH_HOST: ${{ secrets.SSH_HOST }}
-      SSH_USER: ${{ secrets.SSH_USER }}
-      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      CF_CLIENT_ID: ${{ secrets.CF_CLIENT_ID }}
-      CF_CLIENT_SECRET: ${{ secrets.CF_CLIENT_SECRET }}
-      GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
-      GHCR_USER: ${{ secrets.GHCR_USER }}
-      DEPLOY_PATH: ${{ secrets.DRUGSTORE_ADDRESS_DEPLOY_PATH }}

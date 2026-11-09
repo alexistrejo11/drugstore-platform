@@ -1,12 +1,12 @@
 package microservice.user_service;
 
 import io.github.alexisTrejo11.drugstore.users.UserServiceApplication;
-import libs_kernel.log.audit.AuditLogger;
-import libs_kernel.security.ApiSecurityResponseWriter;
+import io.github.alexisTrejo11.drugstore.users.config.log.AuditLogger;
+import io.github.alexisTrejo11.drugstore.users.config.security.ApiSecurityResponseWriter;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(
     classes = UserServiceApplication.class,
@@ -15,9 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 @ActiveProfiles("test")
 class UserServiceApplicationTests {
 
-    @MockBean
+    @MockitoBean
     private AuditLogger auditLogger;
-    @MockBean
+
+    @MockitoBean
     private ApiSecurityResponseWriter apiSecurityResponseWriter;
 
 	@Test
