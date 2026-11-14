@@ -3,6 +3,9 @@ package io.github.alexisTrejo11.drugstore.accounts.auth.core.domain.models;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import io.github.alexisTrejo11.drugstore.accounts.auth.core.domain.valueobjects.Token;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JWTSessions implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -45,6 +49,7 @@ public class JWTSessions implements Serializable {
 		return session;
 	}
 
+  @JsonIgnore
   public boolean isExpired() {
     return LocalDateTime.now().isAfter(expiresAt);
   }

@@ -1,10 +1,14 @@
 package io.github.alexisTrejo11.drugstore.accounts.auth.core.domain.valueobjects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import libs_kernel.security.dto.UserClaims;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record Token(
     String code,
     String type,
@@ -17,6 +21,7 @@ public record Token(
     }
   }
 
+  @JsonIgnore
   public boolean isExpired() {
     return LocalDateTime.now().isAfter(expiresAt);
   }

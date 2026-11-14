@@ -1,6 +1,7 @@
 package io.github.alexisTrejo11.drugstore.carts.cart.adapter.output.persistence.mapper;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -195,7 +196,7 @@ public class CartItemModelMapper {
     return AfterwardsItem.reconstruct(itemParamsBuilder.build(), model.getAddedAt());
   }
 
-  public List<AfterwardsItem> toAfterwardsDomains(List<AfterwardModel> models) {
+  public List<AfterwardsItem> toAfterwardsDomains(Collection<AfterwardModel> models) {
     if (models == null) {
       log.debug("Persistence afterwards items list is null, returning empty list");
       return Collections.emptyList();
